@@ -26,6 +26,24 @@ export class PostService {
       where: { title: Like(`%${findPostDto}%`) },
     });
   }
+  //상세조회
+  async findOne(id: number) {
+    const findPost = await this.postRepositorty.findOne({
+      where: { id },
+    });
+    const otherPost = await this.postRepositorty.find({
+      where: { company_id: findPost.company_id },
+    });
+    return {
+      id: findPost.id,
+      title: findPost.title,
+      point: findPost.point,
+      position: findPost.position,
+      skill: findPost.skill,
+      description: findPost.description,
+      other: otherPost.map((v) => v.id),
+    };
+  }
   //수정
   async update(id: number, updatePostDto: UpdatePostDto): Promise<void> {
     await this.postRepositorty.update(id, updatePostDto);

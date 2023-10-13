@@ -37,9 +37,14 @@ export class PostController {
     return await this.postService.findAll();
   }
   //특정 값 조회
-  @Get(':value')
-  findOne(@Param('value') findPostDto: FindPostDto) {
-    return this.postService.findBy(findPostDto);
+  @Get('/search/:value')
+  async findBy(@Param('value') findPostDto: FindPostDto): Promise<Posts[]> {
+    return await this.postService.findBy(findPostDto);
+  }
+  //상세조회
+  @Get(':id')
+  async findOne(@Param('id') id: number) {
+    return await this.postService.findOne(id);
   }
   //수정
   @Patch(':id')
