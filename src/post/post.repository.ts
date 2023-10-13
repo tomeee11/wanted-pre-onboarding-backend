@@ -1,18 +1,23 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Post } from './entities/post.entity';
+import { Posts } from './entities/post.entity';
 import { Injectable } from '@nestjs/common';
-import { FindOneOptions, Repository } from 'typeorm';
+import { FindOneOptions, FindOptions, Repository, Like } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
 @Injectable()
 export class PostRepository {
   constructor(
-    @InjectRepository(Post)
-    private postRepository: Repository<Post>,
+    @InjectRepository(Posts)
+    private postRepository: Repository<Posts>,
   ) {}
+
+  //조회
+  async find(option: FindOneOptions<Posts>): Promise<Posts[]> {
+    return await this.postRepository.find(option);
+  }
   //상세조회
-  async findOne(option: FindOneOptions<Post>): Promise<Post> {
+  async findOne(option: FindOneOptions<Posts>): Promise<Posts> {
     return this.postRepository.findOne(option);
   }
   //생성
@@ -24,7 +29,7 @@ export class PostRepository {
   async update(id: number, updatePostDto: UpdatePostDto): Promise<void> {
     await this.postRepository
       .createQueryBuilder()
-      .update(Post)
+      .update(Posts)
       .set({
         title: updatePostDto.title,
         position: updatePostDto.position,
@@ -36,7 +41,7 @@ export class PostRepository {
       .execute();
   }
   //삭제
-  async delete(existedPost: Post): Promise<void> {
+  async delete(existedPost: Posts): Promise<void> {
     await this.postRepository.remove(existedPost);
   }
 }

@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostRepository } from './post.repository';
-import { Post } from './entities/post.entity';
+import { Posts } from './entities/post.entity';
+import { Like } from 'typeorm';
+import { FindPostDto } from './dto/find-post.dto';
 
 @Injectable()
 export class PostService {
@@ -13,12 +15,16 @@ export class PostService {
     await this.postRepositorty.create(createPostDto);
   }
   //전체조회
-  findAll() {
-    return `This action returns all post`;
+  async findAll(): Promise<Posts[]> {
+    return await this.postRepositorty.find({
+      select: ['id', 'title', 'point', 'position', 'skill'],
+    });
   }
-  //상세조회
-  async findOne(id: number): Promise<Post> {
-    return await this.postRepositorty.findOne({ where: { id } });
+  //입력 받은 값 조회
+  async findBy(findPostDto: FindPostDto): Promise<Posts[]> {
+    return await this.postRepositorty.find({
+      where: { title: Like(`%${findPostDto}%`) },
+    });
   }
   //수정
   async update(id: number, updatePostDto: UpdatePostDto): Promise<void> {
@@ -26,7 +32,7 @@ export class PostService {
   }
   //삭제
   async remove(id: number): Promise<void> {
-    const existedPost: Post = await this.postRepositorty.findOne({
+    const existedPost = await this.postRepositorty.findOne({
       where: { id },
     });
     await this.postRepositorty.delete(existedPost);
