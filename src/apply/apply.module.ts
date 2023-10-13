@@ -3,7 +3,7 @@ import { ApplyService } from './apply.service';
 import { ApplyController } from './apply.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Apply } from './entities/apply.entity';
-import { ApplyRepository } from './entities/apply.repository';
+import { ApplyRepository } from './apply.repository';
 import { PostRepository } from 'src/post/post.repository';
 import { PostModule } from 'src/post/post.module';
 

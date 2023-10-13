@@ -1,13 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ApplyRepository } from './entities/apply.repository';
+import { ApplyRepository } from './apply.repository';
 import { PostRepository } from 'src/post/post.repository';
 
 @Injectable()
 export class ApplyService {
   constructor(
-    private applyRepositorty: ApplyRepository,
-  ) // private postRepository: PostRepository,
-  {}
+    private applyRepositorty: ApplyRepository, // private postRepository: PostRepository,
+  ) {}
 
   //생성
   async apply(postId: number, userId: number): Promise<any> {
