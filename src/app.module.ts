@@ -7,12 +7,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfig } from 'config/typeorm.config';
 // import { APP_FILTER } from '@nestjs/core';
 // import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { ApplyModule } from './apply/apply.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(TypeOrmConfig),
     ConfigModule.forRoot({ isGlobal: true, envFilePath: './.env' }),
     PostModule,
+    ApplyModule,
   ],
   controllers: [AppController],
   providers: [
